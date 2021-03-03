@@ -21,4 +21,14 @@ yum install docker -y
 chkconfig docker on
 service docker start
 
+echo "Pull latest version of Jenkins docker image"
+docker pull jenkins/jenkins:latest
 
+echo "Create Jenkins user in docker group"
+useradd -m -G docker jenkins 
+mkdir -p /home/jenkins/docker_volume
+chown jenkins:jenkins -R /home/jenkins/docker_volume 
+
+echo "run docker"
+#docker run --name jenkins -d  -v /home/jenkins/docker_volume:/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins/jenkins:latest
+docker run --name jenkins -d -p 8080:8080 -p 50000:50000 jenkins/jenkins:latest
